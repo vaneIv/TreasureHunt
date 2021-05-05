@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.vane.android.treasurehunt.GeofenceViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activity_maps_main"
         android:layout_width="match_parent"
@@ -16,7 +23,11 @@
             android:id="@+id/hint_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginEnd="@dimen/horizontal_margin"
+            android:layout_marginBottom="@dimen/vertical_margin"
             android:fontFamily="@font/della_respira"
+            android:text="@{context.getString(viewmodel.geofenceHintResourceId)}"
             android:textAlignment="center"
             android:textSize="@dimen/hint_text_size"
             android:textStyle="bold"
@@ -38,11 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:contentDescription="@string/android_map_description"
+            android:src="@{context.getDrawable(viewmodel.geofenceImageResourceId)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline"
-            tools:src="@drawable/android_map"/>
+            tools:src="@drawable/android_map" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
