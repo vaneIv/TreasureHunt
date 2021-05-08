@@ -51,7 +51,7 @@ class HuntMainActivity : AppCompatActivity() {
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
     // TODO: Step 8 add in a pending intent
-    private val geofencePandingIntent: PendingIntent by lazy {
+    private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
         intent.action = ACTION_GEOFENCE_EVENT
         PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -161,6 +161,24 @@ class HuntMainActivity : AppCompatActivity() {
      */
     private fun removeGeofences() {
         // TODO: Step 12 add in code to remove the geofences
+        // Initially, check if foreground permissions have been approved, if they have not then return.
+        if (!foregroundAndBackgroundLocationPermissionApproved()) {
+            return
+        }
+
+        // Call removeGeofences() on the geofencingClient and pass in the geofencePendingIntent.
+        geofencingClient.removeGeofences(geofencePendingIntent)?.run {
+            // Add an onSuccessListener(), update the user that the geofences were successfully removed through a toast.
+            addOnSuccessListener {
+                Log.d(TAG, getString(R.string.geofences_removed))
+                Toast.makeText(applicationContext, R.string.geofences_removed, Toast.LENGTH_SHORT)
+                    .show()
+            }
+            // Add an onFailureListener() where you log that the geofences weren’t removed.
+            addOnFailureListener {
+                Log.d(TAG, getString(R.string.geofences_not_removed))
+            }
+        }
     }
 
     /**
@@ -310,10 +328,10 @@ class HuntMainActivity : AppCompatActivity() {
 
         // Call removeGeofences() on the geofencingClient to remove any geofences already associated
         // to the pending intent.
-        geofencingClient.removeGeofences(geofencePandingIntent)?.run {
+        geofencingClient.removeGeofences(geofencePendingIntent)?.run {
             // When removeGeofences() completes, regardless of its success or failure, add the new geofences.
             addOnCompleteListener {
-                geofencingClient.addGeofences(geofencingRequest, geofencePandingIntent)?.run {
+                geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent)?.run {
                     // If adding the geofences is successful, let the user know through a toast that they
                     // were successful.
                     addOnSuccessListener {
