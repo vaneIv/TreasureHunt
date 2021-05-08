@@ -3,6 +3,14 @@
     package="com.vane.android.treasurehunt">
 
     <!--    TODO: Step 1 add in permissions for fine location and background-->
+    <!--
+      The FINE_LOCATION permission is required for geofencing functionality to work.
+  -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--
+        The BACKGROUND_LOCATION permission is required for geofencing functionality to work on Q+
+    -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
